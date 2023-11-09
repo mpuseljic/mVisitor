@@ -5,6 +5,7 @@ import Header from "./Header";
 import Form from "./Form";
 import Head from "./Head";
 import ItalianForm from "./ItalianForm";
+import GermanForm from "./GermanForm";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Form />} />
             <Route path="/italian" element={<ItalianForm />} />
+            <Route path="/german" element={<GermanForm />} />
           </Routes>
         </main>
       </div>

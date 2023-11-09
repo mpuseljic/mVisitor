@@ -18,7 +18,7 @@ function Head() {
       <div className="language-selector">
         <Link to="/">🇺🇸</Link>
         <Link to="/">🇭🇷</Link>
-        <a href="index-german.html">🇩🇪</a>
+        <Link to="/german">🇩🇪</Link>
         <Link to="/italian">🇮🇹</Link>
       </div>
     </div>

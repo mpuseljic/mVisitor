@@ -696,28 +696,27 @@ function Form() {
                   </p>
                 </div>
               </div>
-
-              <div className="checkbox" style={{ marginBottom: "60px" }}>
-                <label htmlFor="check-form">
-                  <input type="checkbox" name="check-form" id="check-form" />
-                  <span className="text">
-                    I accept the GDPR and privacy policy
-                  </span>
-                </label>
-              </div>
-
-              <p className="check-in">
-                <button
-                  id="submit"
-                  className="submit"
-                  // Replace with your actual function
-                >
-                  CHECK-IN
-                </button>
-              </p>
             </form>
           </div>
         ))}
+        <div className="accept-form">
+          <div className="checkbox" style={{ marginBottom: "60px" }}>
+            <label htmlFor="check-form">
+              <input type="checkbox" name="check-form" id="check-form" />
+              <span className="text">I accept the GDPR and privacy policy</span>
+            </label>
+          </div>
+
+          <p className="check-in">
+            <button
+              id="submit"
+              className="submit"
+              // Replace with your actual function
+            >
+              CHECK-IN
+            </button>
+          </p>
+        </div>
       </div>
     </main>
   );

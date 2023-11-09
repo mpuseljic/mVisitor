@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Head() {
   const location = useLocation();
@@ -15,10 +16,10 @@ function Head() {
         </div>
       </div>
       <div className="language-selector">
-        <a href="index.html">🇺🇸</a>
-        <a href="index.html">🇭🇷</a>
+        <Link to="/">🇺🇸</Link>
+        <Link to="/">🇭🇷</Link>
         <a href="index-german.html">🇩🇪</a>
-        <a href="index-italian.html">🇮🇹</a>
+        <Link to="/italian">🇮🇹</Link>
       </div>
     </div>
   );

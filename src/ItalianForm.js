@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-function Form() {
+function ItalianForm() {
   const [formData, setFormData] = useState({
     citizenship: "",
     countryOfBirth: "",
@@ -142,7 +142,7 @@ function Form() {
                     </label>
                   </div>
                   <div className="field-form">
-                    <label htmlFor="firstName">Name / Ime</label>
+                    <label htmlFor="firstName">Nome / Ime</label>
                     <input
                       type="text"
                       name="firstName"
@@ -153,7 +153,7 @@ function Form() {
                     />
                   </div>
                   <div class="field-form">
-                    <label for="lastName">Lastname / Prezime</label>
+                    <label for="lastName">Cognome / Prezime</label>
                     <input
                       type="text"
                       name="lastName"
@@ -164,14 +164,14 @@ function Form() {
                     />
                   </div>
                   <div class="field-form">
-                    <label>Gender / Spol </label>
+                    <label>Genere / Spol </label>
                     <select name="spol" id="spol">
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
+                      <option value="male">Maschio</option>
+                      <option value="female">Femmina</option>
                     </select>
                   </div>
                   <div class="field-form">
-                    <label for="date">Date of birth / Datum rođenja </label>
+                    <label for="date">Data di nascita / Datum rođenja </label>
                     <input
                       type="text"
                       name="datum"
@@ -183,7 +183,7 @@ function Form() {
                   </div>
                   <div class="field-form">
                     <label for="citizenship">
-                      Citizenship / Državljanstvo{" "}
+                      Cittadinanza / Državljanstvo{" "}
                     </label>
                     <input
                       type="text"
@@ -439,7 +439,7 @@ function Form() {
                   </div>
                   <div class="field-form">
                     <label for="country-of-birth">
-                      Country of birth / Država rođenja
+                      Paese di nascita / Država rođenja
                     </label>
                     <input
                       type="text"
@@ -452,7 +452,7 @@ function Form() {
                   </div>
                   <div class="field-form">
                     <label for="country-of-residence">
-                      Country of residence / Država prebivališta
+                      Paese di residenza / Država prebivališta
                     </label>
                     <input
                       type="text"
@@ -466,7 +466,7 @@ function Form() {
                   {formData.countyOfResidence === "Croatia" ? (
                     <div className="field-form">
                       <label htmlFor="city-select">
-                        Place of residence / Mjesto prebivališta
+                        Luogo di residenza / Mjesto prebivališta
                       </label>
                       <select
                         id="city-select"
@@ -644,7 +644,7 @@ function Form() {
                   ) : (
                     <div className="field-form">
                       <label htmlFor="residenceField">
-                        Place of residence / Mjesto prebivališta
+                        Luogo di residenza / Mjesto prebivališta
                       </label>
                       <input
                         type="text"
@@ -658,17 +658,17 @@ function Form() {
 
                   <div class="field-form">
                     <label for="document-type">
-                      Document type / Vrsta isprave
+                      Tipo di documento / Vrsta isprave
                     </label>
                     <select name="document-type" id="document-type">
-                      <option value="id">ID</option>
-                      <option value="passport">Passport</option>
+                      <option value="id">Carta d'identità</option>
+                      <option value="passport">Passporto</option>
                     </select>
                   </div>
                   {/* Add the rest of your form fields here */}
                   <div className="field-form">
                     <label htmlFor="document-number">
-                      Document number / Broj isprave
+                      Numero del documento / Broj isprave
                     </label>
                     <input
                       type="text"
@@ -695,8 +695,8 @@ function Form() {
                       }}
                     >
                       {index === persons.length - 1
-                        ? "ADD NEXT PERSON"
-                        : "REMOVE PERSON"}
+                        ? "AGGIUNGI PERSONA SUCCESSIVA"
+                        : "RIMUOVI PERSONA"}
                     </button>
                   </p>
                 </div>
@@ -708,7 +708,9 @@ function Form() {
           <div className="checkbox" style={{ marginBottom: "60px" }}>
             <label htmlFor="check-form">
               <input type="checkbox" name="check-form" id="check-form" />
-              <span className="text">I accept the GDPR and privacy policy</span>
+              <span className="text">
+                Accetto il GDPR e la politica sulla privacy
+              </span>
             </label>
           </div>
 
@@ -727,4 +729,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default ItalianForm;

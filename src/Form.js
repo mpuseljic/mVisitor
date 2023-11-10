@@ -96,12 +96,26 @@ function Form() {
     const value = e.target.value.slice(0, MAX_CHAR_LENGTH);
     setFormData({
       ...formData,
-      firstName: value,
-      lastName: value,
       citizenship: value,
       countryOfBirth: value,
       countyOfResidence: value,
       cityOfResidence: value,
+    });
+  };
+
+  const handleNameInput = (e) => {
+    const value = e.target.value.slice(0, MAX_CHAR_LENGTH);
+    setFormData({
+      ...formData,
+      firstName: value,
+    });
+  };
+
+  const handleLastnameInput = (e) => {
+    const value = e.target.value.slice(0, MAX_CHAR_LENGTH);
+    setFormData({
+      ...formData,
+      lastName: value,
     });
   };
 
@@ -128,6 +142,31 @@ function Form() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    for (const key in formData) {
+      if (formData[key] === "") {
+        alert("Please fill out all fields");
+        return;
+      }
+    }
+
+    const dobRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+    if (!dobRegex.test(formData.dateOfBirth)) {
+      alert("Please enter a valid date of birth (dd.MM.yyyy)");
+      return;
+    }
+
+    const checkbox = document.getElementById("check-form");
+    if (!checkbox.checked) {
+      alert("Please accept the GDPR and privacy policy");
+      return;
+    }
+
+    alert("Check-in is done!");
+  };
+
   return (
     <main>
       <div className="second-container">
@@ -149,7 +188,7 @@ function Form() {
                       id="firstName"
                       placeholder=""
                       value={formData.firstName}
-                      onChange={handleInputChange}
+                      onChange={handleNameInput}
                     />
                   </div>
                   <div class="field-form">
@@ -160,7 +199,7 @@ function Form() {
                       id="lastName"
                       placeholder
                       value={formData.lastName}
-                      onChange={handleInputChange}
+                      onChange={handleLastnameInput}
                     />
                   </div>
                   <div class="field-form">
@@ -474,7 +513,6 @@ function Form() {
                         value={formData.cityOfResidence}
                         onChange={(e) => {
                           handleCityOfResidenceChange(e);
-                          handleInputChange(e);
                         }}
                       >
                         <option value="" disabled>
@@ -994,11 +1032,7 @@ function Form() {
           </div>
 
           <p className="check-in">
-            <button
-              id="submit"
-              className="submit"
-              // Replace with your actual function
-            >
+            <button id="submit" className="submit" onClick={handleSubmit}>
               CHECK-IN
             </button>
           </p>

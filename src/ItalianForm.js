@@ -16,7 +16,7 @@ function ItalianForm() {
   });
 
   const [formDataList, setFormDataList] = useState([createPersonData()]);
-  const [residenceField, setResidenceField] = useState("");
+  const [residenceFields, setResidenceFields] = useState([""]);
 
   useEffect(() => {
     const loadCities = async () => {
@@ -66,6 +66,15 @@ function ItalianForm() {
         cityOfResidence: selectedCityOfResidence,
       };
       return updatedFormDataList;
+    });
+  };
+
+  const handleResidenceFieldChange = (e, index) => {
+    const value = e.target.value;
+    setResidenceFields((prevResidenceFields) => {
+      const updatedResidenceFields = [...prevResidenceFields];
+      updatedResidenceFields[index] = value;
+      return updatedResidenceFields;
     });
   };
 
@@ -186,8 +195,11 @@ function ItalianForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Iterate over each person's data
-    for (const personData of formDataList) {
+    const jsonDataList = [];
+
+    for (let i = 0; i < formDataList.length; i++) {
+      const personData = formDataList[i];
+
       for (const key in personData) {
         if (personData[key] === "") {
           alert("Compila tutti i campi");
@@ -207,11 +219,25 @@ function ItalianForm() {
         return;
       }
 
-      if (personData.documentNumber.length !== 16) {
-        alert("Inserisci un numero di documento valido di 16 cifre");
-        return;
-      }
+      const jsonPerson = {
+        id: i + 1,
+        firstName: personData.firstName,
+        lastName: personData.lastName,
+        gender: document.getElementById("spol").value,
+        dateOfBirth: personData.dateOfBirth,
+        citizenship: personData.citizenship,
+        countryOfBirth: personData.countryOfBirth,
+        countyOfResidence: personData.countyOfResidence,
+        cityOfResidence: personData.cityOfResidence,
+        documentType: document.getElementById("document-type").value,
+        documentNumber: personData.documentNumber,
+      };
+
+      jsonDataList.push(jsonPerson);
     }
+
+    localStorage.setItem("checkin_data", JSON.stringify(jsonDataList));
+    console.log(jsonDataList);
 
     alert("Il check-in è stato effettuato!");
   };
@@ -1019,8 +1045,10 @@ function ItalianForm() {
                         type="text"
                         name="residenceField"
                         id="residenceField"
-                        value={residenceField}
-                        onChange={(e) => setResidenceField(e.target.value)}
+                        value={residenceFields[index]}
+                        onChange={(e) => {
+                          handleResidenceFieldChange(e, index);
+                        }}
                       />
                     </div>
                   )}

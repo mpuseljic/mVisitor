@@ -16,7 +16,7 @@ function GermanForm() {
   });
 
   const [formDataList, setFormDataList] = useState([createPersonData()]);
-  const [residenceField, setResidenceField] = useState("");
+  const [residenceFields, setResidenceFields] = useState([""]);
 
   useEffect(() => {
     const loadCities = async () => {
@@ -66,6 +66,15 @@ function GermanForm() {
         cityOfResidence: selectedCityOfResidence,
       };
       return updatedFormDataList;
+    });
+  };
+
+  const handleResidenceFieldChange = (e, index) => {
+    const value = e.target.value;
+    setResidenceFields((prevResidenceFields) => {
+      const updatedResidenceFields = [...prevResidenceFields];
+      updatedResidenceFields[index] = value;
+      return updatedResidenceFields;
     });
   };
 
@@ -186,8 +195,11 @@ function GermanForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Iterate over each person's data
-    for (const personData of formDataList) {
+    const jsonDataList = [];
+
+    for (let i = 0; i < formDataList.length; i++) {
+      const personData = formDataList[i];
+
       for (const key in personData) {
         if (personData[key] === "") {
           alert("Bitte fülle alle Felder aus");
@@ -207,13 +219,25 @@ function GermanForm() {
         return;
       }
 
-      if (personData.documentNumber.length !== 16) {
-        alert(
-          "Bitte geben Sie eine gültige Dokumentennummer mit 16 Ziffern ein"
-        );
-        return;
-      }
+      const jsonPerson = {
+        id: i + 1,
+        firstName: personData.firstName,
+        lastName: personData.lastName,
+        gender: document.getElementById("spol").value,
+        dateOfBirth: personData.dateOfBirth,
+        citizenship: personData.citizenship,
+        countryOfBirth: personData.countryOfBirth,
+        countyOfResidence: personData.countyOfResidence,
+        cityOfResidence: personData.cityOfResidence,
+        documentType: document.getElementById("document-type").value,
+        documentNumber: personData.documentNumber,
+      };
+
+      jsonDataList.push(jsonPerson);
     }
+
+    localStorage.setItem("checkin_data", JSON.stringify(jsonDataList));
+    console.log(jsonDataList);
 
     alert("Der Check-in ist erledigt!");
   };
@@ -1021,8 +1045,10 @@ function GermanForm() {
                         type="text"
                         name="residenceField"
                         id="residenceField"
-                        value={residenceField}
-                        onChange={(e) => setResidenceField(e.target.value)}
+                        value={residenceFields[index]}
+                        onChange={(e) => {
+                          handleResidenceFieldChange(e, index);
+                        }}
                       />
                     </div>
                   )}

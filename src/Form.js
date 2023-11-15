@@ -236,8 +236,16 @@ function Form() {
       jsonDataList.push(jsonPerson);
     }
 
-    localStorage.setItem("checkin_data", JSON.stringify(jsonDataList));
-    console.log(jsonDataList);
+    // Retrieve existing data from local storage or initialize an empty array
+    const existingData = JSON.parse(localStorage.getItem("checkin_data")) || [];
+
+    // Combine existing data with the new data
+    const combinedData = [...existingData, ...jsonDataList];
+
+    // Save the combined data back to local storage
+    localStorage.setItem("checkin_data", JSON.stringify(combinedData));
+
+    console.log(combinedData);
 
     alert("Check-in is done!");
   };

@@ -93,6 +93,25 @@ function Form() {
   const handleDateOfBirthChange = (e, index) => {
     let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
 
+    // Restrict day to a maximum of 31
+    const day = value.slice(0, 2);
+    if (parseInt(day, 10) > 31) {
+      value = "31" + value.slice(2);
+    }
+
+    // Restrict month to a maximum of 12
+    const month = value.slice(2, 4);
+    if (parseInt(month, 10) > 12) {
+      value = value.slice(0, 2) + "12" + value.slice(4);
+    }
+
+    // Restrict year to the current year
+    const currentYear = new Date().getFullYear();
+    const year = value.slice(4, 8);
+    if (parseInt(year, 10) > currentYear) {
+      value = value.slice(0, 4) + currentYear + value.slice(8);
+    }
+
     if (value.length >= 2 && value.charAt(1) !== ".") {
       value = value.slice(0, 2) + "." + value.slice(2);
     }
@@ -157,7 +176,7 @@ function Form() {
   };
 
   const handleDocumentNumberChange = (e, index) => {
-    const value = e.target.value.slice(0, 16);
+    const value = e.target.value.replace(/\D/g, "").slice(0, 16); // Remove non-numeric characters
     setFormDataList((prevFormDataList) => {
       const updatedFormDataList = [...prevFormDataList];
       updatedFormDataList[index] = {
@@ -166,7 +185,9 @@ function Form() {
       };
       return updatedFormDataList;
     });
-    setIsDocumentNumberValid(value.length <= 16);
+    setIsDocumentNumberValid(
+      value.length === e.target.value.length && value.length <= 16
+    );
   };
 
   const handleAddPerson = (e) => {

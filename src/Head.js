@@ -17,21 +17,25 @@ function Head() {
         </div>
       </div>
       <div className="language-selector">
-        <Link to="/">
+        <Link to="/" style={flagStyle}>
           <Flag country="US" />
         </Link>
-        <Link to="/">
+        <Link to="/" style={flagStyle}>
           <Flag country="HR" />
         </Link>
-        <Link to="/italian">
+        <Link to="/italian" style={flagStyle}>
           <Flag country="IT" />
         </Link>
-        <Link to="/german">
+        <Link to="/german" style={flagStyle}>
           <Flag country="DE" />
         </Link>
       </div>
     </div>
   );
 }
+
+const flagStyle = {
+  marginRight: "10px", // Adjust the spacing as needed
+};
 
 export default Head;

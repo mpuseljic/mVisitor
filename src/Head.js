@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Flag from "react-flagkit";
 
 function Head() {
   const location = useLocation();
@@ -16,10 +17,18 @@ function Head() {
         </div>
       </div>
       <div className="language-selector">
-        <Link to="/">🇺🇸</Link>
-        <Link to="/">🇭🇷</Link>
-        <Link to="/german">🇩🇪</Link>
-        <Link to="/italian">🇮🇹</Link>
+        <Link to="/">
+          <Flag country="US" />
+        </Link>
+        <Link to="/">
+          <Flag country="HR" />
+        </Link>
+        <Link to="/italian">
+          <Flag country="IT" />
+        </Link>
+        <Link to="/german">
+          <Flag country="DE" />
+        </Link>
       </div>
     </div>
   );

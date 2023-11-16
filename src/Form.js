@@ -91,7 +91,11 @@ function Form() {
   };
 
   const handleDateOfBirthChange = (e, index) => {
-    let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    let value = e.target.value.replace(/\D/g, "");
+
+    if (e.nativeEvent.inputType === "deleteContentBackward") {
+      value = value.slice(0, -1);
+    }
 
     // Restrict day to a maximum of 31
     const day = value.slice(0, 2);
@@ -99,13 +103,11 @@ function Form() {
       value = "31" + value.slice(2);
     }
 
-    // Restrict month to a maximum of 12
     const month = value.slice(2, 4);
     if (parseInt(month, 10) > 12) {
       value = value.slice(0, 2) + "12" + value.slice(4);
     }
 
-    // Restrict year to the current year
     const currentYear = new Date().getFullYear();
     const year = value.slice(4, 8);
     if (parseInt(year, 10) > currentYear) {

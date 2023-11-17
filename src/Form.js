@@ -58,6 +58,8 @@ function Form() {
 
   const handleCityOfResidenceChange = (e, index) => {
     const selectedCityOfResidence = e.target.value;
+    const isCityValid = isCityInDatalist(selectedCityOfResidence);
+
     setFormDataList((prevFormDataList) => {
       const updatedFormDataList = [...prevFormDataList];
       updatedFormDataList[index] = {
@@ -66,6 +68,17 @@ function Form() {
       };
       return updatedFormDataList;
     });
+    console.log(`${selectedCityOfResidence} je valjan grad: ${isCityValid}`);
+  };
+
+  const isCityInDatalist = (city) => {
+    const datalist = document.getElementById("cities");
+
+    // Dohvati sve opcije iz datalista
+    const options = Array.from(datalist.options);
+
+    // Provjeri je li grad prisutan u datalistu
+    return options.some((option) => option.value === city);
   };
 
   const handleCountryOfBirthChange = (e, index) => {
@@ -218,6 +231,15 @@ function Form() {
           alert("Please fill out all fields");
           return;
         }
+      }
+
+      const isCityValid = isCityInDatalist(personData.cityOfResidence);
+
+      if (!isCityValid) {
+        alert(
+          "Uneseni grad nije pronađen u datalistu. Molimo odaberite grad iz datalista."
+        );
+        return;
       }
 
       const dobRegex = /^\d{2}\.\d{2}\.\d{4}$/;

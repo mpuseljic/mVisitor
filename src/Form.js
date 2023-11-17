@@ -16,7 +16,6 @@ function Form() {
   });
 
   const [formDataList, setFormDataList] = useState([createPersonData()]);
-  const [residenceFields, setResidenceFields] = useState([""]);
 
   useEffect(() => {
     const loadCities = async () => {
@@ -66,15 +65,6 @@ function Form() {
         cityOfResidence: selectedCityOfResidence,
       };
       return updatedFormDataList;
-    });
-  };
-
-  const handleResidenceFieldChange = (e, index) => {
-    const value = e.target.value;
-    setResidenceFields((prevResidenceFields) => {
-      const updatedResidenceFields = [...prevResidenceFields];
-      updatedResidenceFields[index] = value;
-      return updatedResidenceFields;
     });
   };
 
@@ -146,8 +136,8 @@ function Form() {
         ...updatedFormDataList[index],
         citizenship: value,
         countryOfBirth: value,
-        countyOfResidence: value,
-        cityOfResidence: value,
+        countyOfResidence: value, // Ovo postavlja "Place of residence" na prazno
+        cityOfResidence: "", // Dodano, također postavite grad na prazno
       };
       return updatedFormDataList;
     });
@@ -609,22 +599,25 @@ function Form() {
                       onChange={(e) => handleCountryOfResidenceChange(e, index)}
                     />
                   </div>
-                  {formDataList[index].countyOfResidence === "Croatia" ? (
-                    <div className="field-form">
-                      <label htmlFor="city-select">
-                        Place of residence / Mjesto prebivališta{" "}
-                      </label>
-                      <select
-                        id="city-select"
-                        name="city-select"
-                        value={formDataList[index].cityOfResidence}
-                        onChange={(e) => {
-                          handleCityOfResidenceChange(e, index);
-                        }}
-                      >
-                        <option value="" disabled>
-                          Select city{" "}
-                        </option>
+                  <div className="field-form">
+                    <label htmlFor="city-select">
+                      Place of residence / Mjesto prebivališta{" "}
+                    </label>
+                    <input
+                      id="city-select"
+                      name="city-select"
+                      value={formDataList[index].cityOfResidence}
+                      onChange={(e) => {
+                        handleCityOfResidenceChange(e, index);
+                      }}
+                      list={
+                        formDataList[index].countyOfResidence === "Croatia"
+                          ? "cities"
+                          : undefined
+                      }
+                    />
+                    {formDataList[index].countyOfResidence === "Croatia" && (
+                      <datalist id="cities">
                         <option value="Andrijaševci">Andrijaševci</option>
                         <option value="Antunovac">Antunovac</option>
                         <option value="Babina Greda">Babina Greda</option>
@@ -1065,24 +1058,9 @@ function Form() {
                         <option value="Zlatar Bistrica">Zlatar Bistrica</option>
                         <option value="Žakanje">Žakanje</option>
                         <option value="Žminj">Žminj</option>
-                      </select>
-                    </div>
-                  ) : (
-                    <div className="field-form">
-                      <label htmlFor="residenceField">
-                        Place of residence / Mjesto prebivališta{" "}
-                      </label>
-                      <input
-                        type="text"
-                        name="residenceField"
-                        id="residenceField"
-                        value={residenceFields[index]}
-                        onChange={(e) => {
-                          handleResidenceFieldChange(e, index);
-                        }}
-                      />
-                    </div>
-                  )}
+                      </datalist>
+                    )}
+                  </div>
 
                   <div class="field-form">
                     <label for="document-type">
@@ -1111,7 +1089,6 @@ function Form() {
                       onChange={(e) => handleDocumentNumberChange(e, index)}
                     />
                   </div>
-
                   <p className="for-button" style={{ paddingBottom: "15px" }}>
                     <button
                       id={`toggle-person-${person.id}`}

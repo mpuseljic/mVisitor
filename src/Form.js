@@ -58,7 +58,6 @@ function Form() {
 
   const handleCityOfResidenceChange = (e, index) => {
     const selectedCityOfResidence = e.target.value;
-    const isCityValid = isCityInDatalist(selectedCityOfResidence);
 
     setFormDataList((prevFormDataList) => {
       const updatedFormDataList = [...prevFormDataList];
@@ -68,7 +67,6 @@ function Form() {
       };
       return updatedFormDataList;
     });
-    console.log(`${selectedCityOfResidence} je valjan grad: ${isCityValid}`);
   };
 
   const isCityInDatalist = (city, countryOfResidence) => {

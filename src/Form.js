@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 
 function Form() {
   const [persons, setPersons] = useState([{ id: 1 }]);
-  const [isDocumentNumberValid, setIsDocumentNumberValid] = useState(true);
   const createPersonData = () => ({
     citizenship: "",
     countryOfBirth: "",
@@ -185,7 +184,7 @@ function Form() {
   };
 
   const handleDocumentNumberChange = (e, index) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 16); // Remove non-numeric characters
+    const value = e.target.value.slice(0, 16); // Remove non-numeric characters
     setFormDataList((prevFormDataList) => {
       const updatedFormDataList = [...prevFormDataList];
       updatedFormDataList[index] = {
@@ -194,9 +193,6 @@ function Form() {
       };
       return updatedFormDataList;
     });
-    setIsDocumentNumberValid(
-      value.length === e.target.value.length && value.length <= 16
-    );
   };
 
   const handleAddPerson = (e) => {
@@ -1102,12 +1098,7 @@ function Form() {
                   </div>
                   {/* Add the rest of your form fields here */}
                   <div className="field-form">
-                    <label
-                      htmlFor="document-number"
-                      style={{
-                        color: isDocumentNumberValid ? "#938b8b" : "red",
-                      }}
-                    >
+                    <label htmlFor="document-number">
                       Document number / Broj isprave{" "}
                     </label>
                     <input

@@ -1,9 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-function GermanForm() {
+function Form() {
   const [persons, setPersons] = useState([{ id: 1 }]);
-  const [isDocumentNumberValid, setIsDocumentNumberValid] = useState(true);
   const createPersonData = () => ({
     citizenship: "",
     countryOfBirth: "",
@@ -16,7 +15,6 @@ function GermanForm() {
   });
 
   const [formDataList, setFormDataList] = useState([createPersonData()]);
-  const [residenceFields, setResidenceFields] = useState([""]);
 
   useEffect(() => {
     const loadCities = async () => {
@@ -59,6 +57,7 @@ function GermanForm() {
 
   const handleCityOfResidenceChange = (e, index) => {
     const selectedCityOfResidence = e.target.value;
+
     setFormDataList((prevFormDataList) => {
       const updatedFormDataList = [...prevFormDataList];
       updatedFormDataList[index] = {
@@ -69,13 +68,15 @@ function GermanForm() {
     });
   };
 
-  const handleResidenceFieldChange = (e, index) => {
-    const value = e.target.value;
-    setResidenceFields((prevResidenceFields) => {
-      const updatedResidenceFields = [...prevResidenceFields];
-      updatedResidenceFields[index] = value;
-      return updatedResidenceFields;
-    });
+  const isCityInDatalist = (city, countryOfResidence) => {
+    if (countryOfResidence === "Croatia") {
+      const datalist = document.getElementById("cities");
+
+      const options = Array.from(datalist.options);
+
+      return options.some((option) => option.value === city);
+    }
+    return true;
   };
 
   const handleCountryOfBirthChange = (e, index) => {
@@ -91,7 +92,27 @@ function GermanForm() {
   };
 
   const handleDateOfBirthChange = (e, index) => {
-    let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    let value = e.target.value.replace(/\D/g, "");
+
+    if (e.nativeEvent.inputType === "deleteContentBackward") {
+      value = value.slice(0, -1);
+    }
+
+    const day = value.slice(0, 2);
+    if (parseInt(day, 10) > 31) {
+      value = "31" + value.slice(2);
+    }
+
+    const month = value.slice(2, 4);
+    if (parseInt(month, 10) > 12) {
+      value = value.slice(0, 2) + "12" + value.slice(4);
+    }
+
+    const currentYear = new Date().getFullYear();
+    const year = value.slice(4, 8);
+    if (parseInt(year, 10) > currentYear) {
+      value = value.slice(0, 4) + currentYear + value.slice(8);
+    }
 
     if (value.length >= 2 && value.charAt(1) !== ".") {
       value = value.slice(0, 2) + "." + value.slice(2);
@@ -126,7 +147,7 @@ function GermanForm() {
         citizenship: value,
         countryOfBirth: value,
         countyOfResidence: value,
-        cityOfResidence: value,
+        cityOfResidence: "",
       };
       return updatedFormDataList;
     });
@@ -166,7 +187,6 @@ function GermanForm() {
       };
       return updatedFormDataList;
     });
-    setIsDocumentNumberValid(value.length === 16);
   };
 
   const handleAddPerson = (e) => {
@@ -207,6 +227,18 @@ function GermanForm() {
         }
       }
 
+      const isCityValid = isCityInDatalist(
+        personData.cityOfResidence,
+        personData.countyOfResidence
+      );
+
+      if (!isCityValid) {
+        alert(
+          "Der eingegebene Ort wurde nicht in der Datenliste gefunden. Bitte wählen Sie einen Ort aus der Datenliste aus."
+        );
+        return;
+      }
+
       const dobRegex = /^\d{2}\.\d{2}\.\d{4}$/;
       if (!dobRegex.test(personData.dateOfBirth)) {
         alert("Bitte geben Sie ein gültiges Geburtsdatum ein (dd.MM.yyyy)");
@@ -236,8 +268,13 @@ function GermanForm() {
       jsonDataList.push(jsonPerson);
     }
 
-    localStorage.setItem("checkin_data", JSON.stringify(jsonDataList));
-    console.log(jsonDataList);
+    const existingData = JSON.parse(localStorage.getItem("checkin_data")) || [];
+
+    const combinedData = [...existingData, ...jsonDataList];
+
+    localStorage.setItem("checkin_data", JSON.stringify(combinedData));
+
+    console.log(combinedData);
 
     alert("Der Check-in ist erledigt!");
   };
@@ -285,7 +322,7 @@ function GermanForm() {
                     </select>
                   </div>
                   <div class="field-form">
-                    <label for="date">Geburtsdatum / Datum rođenja</label>
+                    <label for="date">Geburtsdatum / Datum rođenja </label>
                     <input
                       type="text"
                       name="datum"
@@ -578,22 +615,25 @@ function GermanForm() {
                       onChange={(e) => handleCountryOfResidenceChange(e, index)}
                     />
                   </div>
-                  {formDataList[index].countyOfResidence === "Croatia" ? (
-                    <div className="field-form">
-                      <label htmlFor="city-select">
-                        Wohnort / Mjesto prebivališta{" "}
-                      </label>
-                      <select
-                        id="city-select"
-                        name="city-select"
-                        value={formDataList[index].cityOfResidence}
-                        onChange={(e) => {
-                          handleCityOfResidenceChange(e, index);
-                        }}
-                      >
-                        <option value="" disabled>
-                          Select city{" "}
-                        </option>
+                  <div className="field-form">
+                    <label htmlFor="city-select">
+                      Wohnort / Mjesto prebivališta{" "}
+                    </label>
+                    <input
+                      id="city-select"
+                      name="city-select"
+                      value={formDataList[index].cityOfResidence}
+                      onChange={(e) => {
+                        handleCityOfResidenceChange(e, index);
+                      }}
+                      list={
+                        formDataList[index].countyOfResidence === "Croatia"
+                          ? "cities"
+                          : undefined
+                      }
+                    />
+                    {formDataList[index].countyOfResidence === "Croatia" && (
+                      <datalist id="cities">
                         <option value="Andrijaševci">Andrijaševci</option>
                         <option value="Antunovac">Antunovac</option>
                         <option value="Babina Greda">Babina Greda</option>
@@ -1034,24 +1074,9 @@ function GermanForm() {
                         <option value="Zlatar Bistrica">Zlatar Bistrica</option>
                         <option value="Žakanje">Žakanje</option>
                         <option value="Žminj">Žminj</option>
-                      </select>
-                    </div>
-                  ) : (
-                    <div className="field-form">
-                      <label htmlFor="residenceField">
-                        Wohnort / Mjesto prebivališta{" "}
-                      </label>
-                      <input
-                        type="text"
-                        name="residenceField"
-                        id="residenceField"
-                        value={residenceFields[index]}
-                        onChange={(e) => {
-                          handleResidenceFieldChange(e, index);
-                        }}
-                      />
-                    </div>
-                  )}
+                      </datalist>
+                    )}
+                  </div>
 
                   <div class="field-form">
                     <label for="document-type">
@@ -1062,14 +1087,9 @@ function GermanForm() {
                       <option value="passport">Passport</option>
                     </select>
                   </div>
-                  {/* Add the rest of your form fields here */}
+
                   <div className="field-form">
-                    <label
-                      htmlFor="document-number"
-                      style={{
-                        color: isDocumentNumberValid ? "#938b8b" : "red",
-                      }}
-                    >
+                    <label htmlFor="document-number">
                       Dokumentennummer / Broj isprave{" "}
                     </label>
                     <input
@@ -1080,7 +1100,6 @@ function GermanForm() {
                       onChange={(e) => handleDocumentNumberChange(e, index)}
                     />
                   </div>
-
                   <p className="for-button" style={{ paddingBottom: "15px" }}>
                     <button
                       id={`toggle-person-${person.id}`}
@@ -1127,4 +1146,4 @@ function GermanForm() {
   );
 }
 
-export default GermanForm;
+export default Form;

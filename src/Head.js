@@ -17,10 +17,10 @@ function Head() {
         </div>
       </div>
       <div className="language-selector">
-        <Link to="/" style={flagStyle}>
+        <Link to="/test" style={flagStyle}>
           <Flag country="US" />
         </Link>
-        <Link to="/" style={flagStyle}>
+        <Link to="/test" style={flagStyle}>
           <Flag country="HR" />
         </Link>
         <Link to="/italian" style={flagStyle}>

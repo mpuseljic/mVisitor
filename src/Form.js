@@ -69,19 +69,14 @@ function Form() {
   };
 
   const isCityInDatalist = (city, countryOfResidence) => {
-    // Provjeri je li država prebivališta Hrvatska
     if (countryOfResidence === "Croatia") {
       const datalist = document.getElementById("cities");
 
-      // Dohvati sve opcije iz datalista
       const options = Array.from(datalist.options);
 
-      // Provjeri je li grad prisutan u datalistu
       return options.some((option) => option.value === city);
     }
     return true;
-
-    // Ako država prebivališta nije Hrvatska, smatraj da je grad valjan
   };
 
   const handleCountryOfBirthChange = (e, index) => {
@@ -103,7 +98,6 @@ function Form() {
       value = value.slice(0, -1);
     }
 
-    // Restrict day to a maximum of 31
     const day = value.slice(0, 2);
     if (parseInt(day, 10) > 31) {
       value = "31" + value.slice(2);
@@ -152,8 +146,8 @@ function Form() {
         ...updatedFormDataList[index],
         citizenship: value,
         countryOfBirth: value,
-        countyOfResidence: value, // Ovo postavlja "Place of residence" na prazno
-        cityOfResidence: "", // Dodano, također postavite grad na prazno
+        countyOfResidence: value,
+        cityOfResidence: "",
       };
       return updatedFormDataList;
     });
@@ -184,7 +178,7 @@ function Form() {
   };
 
   const handleDocumentNumberChange = (e, index) => {
-    const value = e.target.value.slice(0, 16); // Remove non-numeric characters
+    const value = e.target.value.slice(0, 16);
     setFormDataList((prevFormDataList) => {
       const updatedFormDataList = [...prevFormDataList];
       updatedFormDataList[index] = {
@@ -274,13 +268,10 @@ function Form() {
       jsonDataList.push(jsonPerson);
     }
 
-    // Retrieve existing data from local storage or initialize an empty array
     const existingData = JSON.parse(localStorage.getItem("checkin_data")) || [];
 
-    // Combine existing data with the new data
     const combinedData = [...existingData, ...jsonDataList];
 
-    // Save the combined data back to local storage
     localStorage.setItem("checkin_data", JSON.stringify(combinedData));
 
     console.log(combinedData);
@@ -1096,7 +1087,7 @@ function Form() {
                       <option value="passport">Passport</option>
                     </select>
                   </div>
-                  {/* Add the rest of your form fields here */}
+
                   <div className="field-form">
                     <label htmlFor="document-number">
                       Document number / Broj isprave{" "}

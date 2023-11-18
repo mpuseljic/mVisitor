@@ -15,7 +15,7 @@ function App() {
         <main>
           <Head />
           <Routes>
-            <Route path="/" element={<Form />} />
+            <Route path="/test" element={<Form />} />
             <Route path="/italian" element={<ItalianForm />} />
             <Route path="/german" element={<GermanForm />} />
           </Routes>

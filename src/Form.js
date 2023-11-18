@@ -71,14 +71,20 @@ function Form() {
     console.log(`${selectedCityOfResidence} je valjan grad: ${isCityValid}`);
   };
 
-  const isCityInDatalist = (city) => {
-    const datalist = document.getElementById("cities");
+  const isCityInDatalist = (city, countryOfResidence) => {
+    // Provjeri je li država prebivališta Hrvatska
+    if (countryOfResidence === "Croatia") {
+      const datalist = document.getElementById("cities");
 
-    // Dohvati sve opcije iz datalista
-    const options = Array.from(datalist.options);
+      // Dohvati sve opcije iz datalista
+      const options = Array.from(datalist.options);
 
-    // Provjeri je li grad prisutan u datalistu
-    return options.some((option) => option.value === city);
+      // Provjeri je li grad prisutan u datalistu
+      return options.some((option) => option.value === city);
+    }
+    return true;
+
+    // Ako država prebivališta nije Hrvatska, smatraj da je grad valjan
   };
 
   const handleCountryOfBirthChange = (e, index) => {
@@ -233,7 +239,10 @@ function Form() {
         }
       }
 
-      const isCityValid = isCityInDatalist(personData.cityOfResidence);
+      const isCityValid = isCityInDatalist(
+        personData.cityOfResidence,
+        personData.countyOfResidence
+      );
 
       if (!isCityValid) {
         alert(

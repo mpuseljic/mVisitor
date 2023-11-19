@@ -78,7 +78,7 @@ function Form() {
   };
 
   const isCityInDatalist = (city, countryOfResidence) => {
-    if (countryOfResidence === "Croatia") {
+    if (countryOfResidence === "Kroatien") {
       const datalist = document.getElementById("cities");
 
       const options = Array.from(datalist.options);
@@ -636,12 +636,12 @@ function Form() {
                         handleCityOfResidenceChange(e, index);
                       }}
                       list={
-                        formDataList[index].countyOfResidence === "Croatia"
+                        formDataList[index].countyOfResidence === "Kroatien"
                           ? "cities"
                           : undefined
                       }
                     />
-                    {formDataList[index].countyOfResidence === "Croatia" && (
+                    {formDataList[index].countyOfResidence === "Kroatien" && (
                       <datalist id="cities">{generateCityOptions()}</datalist>
                     )}
                   </div>

@@ -1,6 +1,6 @@
 [
   {
-    "cityName": "Zagreb",
+    "city": "Zagreb",
     "lat": "45.8167",
     "lng": "15.9833",
     "country": "Croatia",
@@ -11,7 +11,7 @@
     "population_proper": "809268"
   },
   {
-    "cityName": "Rijeka",
+    "city": "Rijeka",
     "lat": "45.3272",
     "lng": "14.4411",
     "country": "Croatia",
@@ -22,7 +22,7 @@
     "population_proper": "128624"
   },
   {
-    "cityName": "Split",
+    "city": "Split",
     "lat": "43.5100",
     "lng": "16.4400",
     "country": "Croatia",

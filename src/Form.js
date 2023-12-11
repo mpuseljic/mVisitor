@@ -18,6 +18,7 @@ function Form() {
   const cityNames = citiesData.map((city) => city.city);
 
   const [formDataList, setFormDataList] = useState([createPersonData()]);
+  const [facilityData] = useState({});
 
   useEffect(() => {
     const loadCities = async () => {
@@ -221,7 +222,7 @@ function Form() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const jsonDataList = [];
@@ -260,30 +261,46 @@ function Form() {
         return;
       }
 
-      const jsonPerson = {
-        id: i + 1,
-        firstName: personData.firstName,
-        lastName: personData.lastName,
-        gender: document.getElementById("spol").value,
-        dateOfBirth: personData.dateOfBirth,
-        citizenship: personData.citizenship,
-        countryOfBirth: personData.countryOfBirth,
-        countyOfResidence: personData.countyOfResidence,
-        cityOfResidence: personData.cityOfResidence,
-        documentType: document.getElementById("document-type").value,
-        documentNumber: personData.documentNumber,
-      };
-
-      jsonDataList.push(jsonPerson);
+      jsonDataList.push({
+        Name: personData.firstName,
+        Lastname: personData.lastName,
+        Gender: document.getElementById("spol").value,
+        DateOfBirth: personData.dateOfBirth,
+        Citizenship: personData.citizenship,
+        CountryOfBirth: personData.countryOfBirth,
+        CountryofResidence: personData.countyOfResidence,
+        PlaceOfResidence: personData.cityOfResidence,
+        DocumentType: document.getElementById("document-type").value,
+        DocumentNumber: personData.documentNumber,
+      });
     }
 
-    const existingData = JSON.parse(localStorage.getItem("checkin_data")) || [];
+    const facilityID = facilityData.FacilityID;
 
-    const combinedData = [...existingData, ...jsonDataList];
+    const apiUrl =
+      "https://checkin.mvisitor.hr/M1WebServiceVisitor.svc/v1/PrijavaTest";
 
-    localStorage.setItem("checkin_data", JSON.stringify(combinedData));
+    try {
+      const response = await fetch(
+        "https://cors-anywhere.herokuapp.com/" + apiUrl,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Dodajte druge potrebne zaglavlja
+          },
+          body: JSON.stringify({
+            FacilityID: facilityID,
+            ListaGostijuTest: jsonDataList,
+          }),
+        }
+      );
 
-    console.log(combinedData);
+      const result = await response.json();
+      // Ostatak koda...
+    } catch (error) {
+      console.error("Pogreška pri slanju prijave: ", error);
+    }
 
     alert("Check-in is done!");
   };
@@ -653,6 +670,8 @@ function Form() {
                     <select name="document-type" id="document-type">
                       <option value="id">ID</option>
                       <option value="passport">Passport</option>
+                      <option value="passport">Driver Licence</option>
+                      <option value="passport">Health insurance card</option>
                     </select>
                   </div>
 

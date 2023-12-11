@@ -653,6 +653,8 @@ function Form() {
                     <select name="document-type" id="document-type">
                       <option value="id">Personalausweis</option>
                       <option value="passport">Passport</option>
+                      <option value="passport">Führerschein</option>
+                      <option value="passport">Gesundheitskarte</option>
                     </select>
                   </div>
 
